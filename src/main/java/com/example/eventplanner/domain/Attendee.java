@@ -6,6 +6,7 @@ import lombok.*;
 
 @NoArgsConstructor
 @Setter
+@Getter
 @EqualsAndHashCode
 @Entity
 @Table(name = "attendees")
@@ -21,11 +22,4 @@ public class Attendee {
         this.code = code.getCode();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getCode() {
-        return code;
-    }
 }

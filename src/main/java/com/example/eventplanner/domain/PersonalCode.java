@@ -1,5 +1,8 @@
 package com.example.eventplanner.domain;
 
+import lombok.Getter;
+
+@Getter
 public class PersonalCode {
     private String code;
 
@@ -10,7 +13,4 @@ public class PersonalCode {
         this.code = code;
     }
 
-    public String getCode() {
-        return code;
-    }
 }
