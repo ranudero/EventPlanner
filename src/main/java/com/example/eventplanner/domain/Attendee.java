@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
-@NoArgsConstructor
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter(AccessLevel.PACKAGE)
 @Getter
 @EqualsAndHashCode
 @Entity
@@ -15,11 +15,12 @@ public class Attendee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String code;
+    @Embedded
+    private PersonalCode code;
 
     public Attendee(String name, PersonalCode code) {
         this.name = name;
-        this.code = code.getCode();
+        this.code = code;
     }
 
 }

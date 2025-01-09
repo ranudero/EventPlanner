@@ -1,10 +1,11 @@
 package com.example.eventplanner.dtos;
 
 import com.example.eventplanner.domain.Attendee;
+import com.example.eventplanner.domain.PersonalCode;
 
 public record CreatedAttendeeDTO(String name, String code) {
 
     public static CreatedAttendeeDTO from(Attendee attendee) {
-        return new CreatedAttendeeDTO(attendee.getName(), attendee.getCode());
+        return new CreatedAttendeeDTO(attendee.getName(), attendee.getCode().getCode());
     }
 }
