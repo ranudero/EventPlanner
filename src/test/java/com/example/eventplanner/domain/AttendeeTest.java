@@ -3,6 +3,8 @@ package com.example.eventplanner.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -20,8 +22,8 @@ public class AttendeeTest {
         Attendee attendee = new Attendee(name, code);
 
         // Then
-        assert attendee.getName().equals(name);
-        assert attendee.getCode().equals(code);
+        assertEquals(name, attendee.getName(), "Name is not set correctly");
+        assertEquals(code, attendee.getCode(), "Personal code is not set correctly");
     }
 
     @Test
