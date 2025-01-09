@@ -32,7 +32,7 @@ public class AttendeeTest {
     }
 
     @Test
-    @DisplayName("Test if Attendee is created with valid name and invalid personal code")
+    @DisplayName("Test if Attendee is not created with valid name and invalid personal code")
     void testAttendeeCreation_invalidPersonalCode() {
         // Given
         String name = "Lander Verbrugghe";
@@ -42,7 +42,7 @@ public class AttendeeTest {
     }
 
     @Test
-    @DisplayName("Test if Attendee is created with valid name and empty personal code")
+    @DisplayName("Test if Attendee not is created with valid name and empty personal code")
     void testAttendeeCreation_emptyPersonalCode() {
         // Given
         String name = "Lander Verbrugghe";
