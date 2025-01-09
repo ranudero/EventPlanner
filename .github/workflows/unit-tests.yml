@@ -19,4 +19,4 @@ jobs:
           distribution: 'temurin'
           cache: gradle
       - name: Test with Gradle
-        run: ./gradlew test -DincludeTags="unit-tests"
+        run: ./gradlew unit-test
