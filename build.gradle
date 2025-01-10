@@ -40,14 +40,14 @@ tasks.named('test') {
 
 
 
-tasks.register('unit-test', Test) {
-    useJUnitPlatform(
+tasks.register('unitTest', Test) {
+    useJUnitPlatform {
         includeTags 'unit-tests'
-    )
+    }
 }
 
-tasks.register('integration-test', Test) {
-    useJUnitPlatform(
+tasks.register('integrationTest', Test) {
+    useJUnitPlatform {
         includeTags 'integration-test'
-    )
+    }
 }
