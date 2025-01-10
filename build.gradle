@@ -37,3 +37,17 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+
+
+tasks.register('unitTest', Test) {
+    useJUnitPlatform {
+        includeTags 'unit-tests'
+    }
+}
+
+tasks.register('integrationTest', Test) {
+    useJUnitPlatform {
+        includeTags 'integration-test'
+    }
+}
