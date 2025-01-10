@@ -2,13 +2,15 @@ package com.example.eventplanner.dtos;
 
 import com.example.eventplanner.domain.Event;
 
+import java.time.LocalDateTime;
+
 public record CreatedEventDTO(
-        String id,
+        long id,
         String name,
-        String date
-        //String numberOfInvitees
+        LocalDateTime date,
+        int numberOfInvitees
 ) {
     public static CreatedEventDTO from(Event event) {
-        return new CreatedEventDTO(event.getId().toString(), event.getName(), event.getDate());
+        return new CreatedEventDTO(event.getId(), event.getName(), event.getStart(), event.getNumberOfInvitees());
     }
 }

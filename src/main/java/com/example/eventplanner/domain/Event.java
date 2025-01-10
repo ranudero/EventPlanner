@@ -1,10 +1,7 @@
 package com.example.eventplanner.domain;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -22,7 +19,12 @@ public class Event {
     private Long id;
     private String name;
     private LocalDateTime start;
-    @ManyToMany(mappedBy="inviteperevent")
+    @ManyToMany
+    @JoinTable(
+            name = "inviteperevent",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "attendee_id"))
+    @Getter (AccessLevel.PROTECTED)
     private List<Attendee> attendeeList;
 
     public Event(String name, LocalDateTime start, List<Attendee> attendeeList) {
@@ -31,7 +33,10 @@ public class Event {
         this.attendeeList = attendeeList;
     }
 
-    public String getDate() {
-        return start.toString();
+    public int getNumberOfInvitees() {
+        return attendeeList.size();
     }
+
+
+
 }
