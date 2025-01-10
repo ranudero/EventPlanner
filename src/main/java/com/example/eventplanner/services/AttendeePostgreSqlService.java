@@ -20,4 +20,14 @@ public class AttendeePostgreSqlService implements AttendeeService {
         return CreatedAttendeeDTO.from(attendee);
     }
 
+    @Override
+    public boolean validateAttendee(String personalCode){
+        return this.validateAttendee(new PersonalCode(personalCode));
+    }
+
+    @Override
+    public boolean validateAttendee(PersonalCode personalCode){
+        return attendeeRepository.findByCode(personalCode).isPresent();
+    }
+
 }

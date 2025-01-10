@@ -4,6 +4,8 @@ import com.example.eventplanner.domain.Attendee;
 import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.PersonalCode;
 import jakarta.validation.constraints.NotBlank;
+
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import java.time.LocalDateTime;
@@ -16,9 +18,9 @@ public record SignupNewEventCommand(
 ) {
     public Event toEvent() {
         LocalDateTime start = LocalDateTime.parse(this.date);
-        List<Attendee> attendeeList = this.attendees.stream()
-                .map(code -> new Attendee("attendee", new PersonalCode(code)))
-                .collect(Collectors.toList());
+        Set<Attendee> attendeeList = attendees.stream()
+                .map(code -> new Attendee("unkown", new PersonalCode(code)))
+                .collect(Collectors.toSet());
         return new Event(name, start, attendeeList);
     }
 }

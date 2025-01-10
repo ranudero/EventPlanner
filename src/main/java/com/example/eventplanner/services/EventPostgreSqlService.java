@@ -16,24 +16,21 @@ import java.util.List;
 public class EventPostgreSqlService implements EventService {
 
     private final AttendeeService attendeeService;
-    private final AttendeeRepository attendeeRepository;
     private final EventRepository eventRepository;
 
     @Override
-    public CreatedEventDTO addEvent(SignupNewEventCommand newEvent) {
+    public CreatedEventDTO createEvent(SignupNewEventCommand newEvent) {
         return null;
     }
 
-    @Override
-    public List<Attendee> removeDuplicates(List<Attendee> attendees) {
+    private List<Attendee> removeDuplicates(List<Attendee> attendees) {
         return attendees.stream()
                 .distinct()
                 .toList();
     }
-
-    @Override
-    public boolean validateAttendees(SignupNewEventCommand newEvent) {
+    
+    private boolean validateAttendees(SignupNewEventCommand newEvent) {
         return newEvent.attendees().stream()
-                .allMatch(code -> attendeeRepository.findByCode(new PersonalCode(code)).isPresent());
+                .allMatch(attendeeService::validateAttendee);
     }
 }

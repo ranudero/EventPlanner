@@ -6,10 +6,10 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Getter
 @EqualsAndHashCode
 @Table(name = "event")
@@ -24,10 +24,10 @@ public class Event {
             name = "inviteperevent",
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "attendee_id"))
-    @Getter (AccessLevel.PROTECTED)
-    private List<Attendee> attendeeList;
+    @Getter (AccessLevel.PACKAGE)
+    private Set<Attendee> attendeeList;
 
-    public Event(String name, LocalDateTime start, List<Attendee> attendeeList) {
+    public Event(String name, LocalDateTime start, Set<Attendee> attendeeList) {
         this.name = name;
         this.start = start;
         this.attendeeList = attendeeList;

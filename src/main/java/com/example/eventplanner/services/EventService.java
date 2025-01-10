@@ -7,7 +7,6 @@ import com.example.eventplanner.dtos.SignupNewEventCommand;
 import java.util.List;
 
 public interface EventService {
-    CreatedEventDTO addEvent(SignupNewEventCommand newEvent);
-    List<Attendee> removeDuplicates(List<Attendee> attendees);
-    boolean validateAttendees(SignupNewEventCommand newEvent);
+    CreatedEventDTO createEvent(SignupNewEventCommand newEvent);
+
 }
