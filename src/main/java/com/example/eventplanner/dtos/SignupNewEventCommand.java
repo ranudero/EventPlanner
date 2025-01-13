@@ -3,6 +3,7 @@ package com.example.eventplanner.dtos;
 import com.example.eventplanner.domain.Attendee;
 import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.PersonalCode;
+import com.example.eventplanner.utils.CustomDateTimeFormatter;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Set;
@@ -17,7 +18,7 @@ public record SignupNewEventCommand(
         @NotBlank List<String> attendees
 ) {
     public Event toEvent() {
-        LocalDateTime start = LocalDateTime.parse(this.date);
+        LocalDateTime start = CustomDateTimeFormatter.parseToDateTime(this.date);
         Set<Attendee> attendeeList = attendees.stream()
                 .map(code -> new Attendee("unkown", new PersonalCode(code)))
                 .collect(Collectors.toSet());

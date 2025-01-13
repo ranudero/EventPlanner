@@ -10,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @EqualsAndHashCode
 @Table(name = "event")

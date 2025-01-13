@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/attendees")
 @RequiredArgsConstructor
-public class Controller {
+public class AttendeeController {
     private final AttendeePostgreSqlService attendeePostgreSqlService;
 
     @PostMapping
     public CreatedAttendeeDTO addAttendee(@RequestBody @Valid SignupNewAttendeeCommand newAttendee) {
         return attendeePostgreSqlService.addAttendee(newAttendee);
     }
+
 }

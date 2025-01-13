@@ -1,13 +1,12 @@
 package com.example.eventplanner.domain;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -28,6 +27,7 @@ public class EventTest {
     }
 
     @Test
+    @DisplayName("Test if the number of invitees is correct")
     void TestEventHasNumberOfInvitees_HappyFlow() {
 
         //when
