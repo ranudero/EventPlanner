@@ -8,6 +8,8 @@ import com.example.eventplanner.repositories.AttendeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AttendeePostgreSqlService implements AttendeeService {
@@ -21,13 +23,9 @@ public class AttendeePostgreSqlService implements AttendeeService {
     }
 
     @Override
-    public boolean validateAttendee(String personalCode){
-        return this.validateAttendee(new PersonalCode(personalCode));
-    }
-
-    @Override
-    public boolean validateAttendee(PersonalCode personalCode){
-        return attendeeRepository.findByCode(personalCode).isPresent();
+    public Attendee getAttendeeIfExists(PersonalCode personalCode){
+        return attendeeRepository.findByCode(personalCode)
+                .orElseThrow(() -> new IllegalArgumentException("Attendee with personalCode not found: " + personalCode));
     }
 
 }

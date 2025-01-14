@@ -1,18 +1,18 @@
-CREATE TABLE Attendees (
+CREATE TABLE attendees (
     id INT generated always as IDENTITY,
     name VARCHAR(255) NOT NULL,
     code VARCHAR(4) NOT NULL,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Event (
+CREATE TABLE event (
     id INT generated always as IDENTITY,
     name VARCHAR(255) NOT NULL,
     start DATE NOT NULL,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE InvitePerEvent (
+CREATE TABLE inviteperevent (
     id INT generated always as IDENTITY,
     event_id INT NOT NULL,
     attendee_id INT NOT NULL,

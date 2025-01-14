@@ -7,3 +7,38 @@ Content-Type: application/json
   "name": "Lander Verbrugghe",
   "personalCode": "PVJ9"
 }
+
+### post test
+POST http://localhost:8080/api/v1/attendees
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Sissi",
+  "personalCode": "PVJ8"
+}
+
+### post test
+POST http://localhost:8080/api/v1/attendees
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Nick",
+  "personalCode": "PVJ7"
+}
+
+### post test
+POST http://localhost:8080/api/v1/events
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "First Event",
+  "date": "2025-01-22 12:00:00",
+  "attendees": [
+    "PVJ9",
+    "PVJ8",
+    "PVJ7"
+  ]
+}
