@@ -18,4 +18,9 @@ public class PersonalCode {
         this.code = code;
     }
 
+    @Override
+    public String toString() {
+        return code;
+    }
+
 }

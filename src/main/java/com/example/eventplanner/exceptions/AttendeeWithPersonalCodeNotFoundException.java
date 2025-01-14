@@ -6,4 +6,5 @@ public class AttendeeWithPersonalCodeNotFoundException extends IllegalArgumentEx
     public AttendeeWithPersonalCodeNotFoundException(PersonalCode personalCode) {
         super("Attendee with personalCode not found: " + personalCode);
     }
+
 }

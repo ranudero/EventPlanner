@@ -2,11 +2,13 @@ package com.example.eventplanner.domain;
 
 import com.example.eventplanner.utils.CustomDateTimeFormatter;
 import com.example.eventplanner.exceptions.DateNotInFutureException;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@Getter
 public class EventBuilder {
     private String name;
     private LocalDateTime start;
@@ -44,5 +46,6 @@ public class EventBuilder {
         this.attendeeList = attendeeList;
         return this;
     }
+
 
 }

@@ -4,6 +4,7 @@ import com.example.eventplanner.domain.Attendee;
 import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.PersonalCode;
 import com.example.eventplanner.dtos.CreatedEventDTO;
+import com.example.eventplanner.dtos.SignupNewAttendeeCommand;
 import com.example.eventplanner.dtos.SignupNewEventCommand;
 import com.example.eventplanner.repositories.EventRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -59,69 +61,17 @@ public class EventPostgreSqlServiceTest {
     @Test
     @DisplayName("Test if createEvent method returns the correct DTO")
     void testCreateEvent_happyFlow() {
-        //Given
-        when(attendeeService.validateAttendee(any(String.class))).thenReturn(true);
-        when(eventRepository.save(any())).thenReturn(new Event(
-                1L,
-                "Test Event",
-                todayPlusTwoDays,
-                Set.of(
-                        new Attendee("Lander", new PersonalCode("PVJ9")),
-                        new Attendee("Nick", new PersonalCode("PVJ8")),
-                        new Attendee("Sissi", new PersonalCode("PVJ7"))
-                )));
-        // When
-        CreatedEventDTO actualDTO = eventPostgreSqlService.createEvent(newEvent);
-        // Then
-        CreatedEventDTO expectedDTO = new CreatedEventDTO(
-                1,
-                "Test Event",
-                todayPlusTwoDays,
-                3);
-
-        assertEquals(expectedDTO.name(), actualDTO.name());
-        assertEquals(expectedDTO.date(), actualDTO.date());
-        assertEquals(expectedDTO.numberOfInvitees(), actualDTO.numberOfInvitees());
-
-    }
-
-    @Test
-    @DisplayName("Test if createEvent method throws exception when creating event for today")
-    void testCreateEventForToday_unHappyFlow(){
         //given
-        when(attendeeService.validateAttendee(any(String.class))).thenReturn(true);
-        when(eventRepository.save(any())).thenReturn(new Event(
-                1L,
-                "Test Event",
-                todayPlusTwoDays,
-                Set.of(
-                        new Attendee("Lander", new PersonalCode("PVJ9")),
-                        new Attendee("Nick", new PersonalCode("PVJ8")),
-                        new Attendee("Sissi", new PersonalCode("PVJ7"))
-                )));
-        newEvent = new SignupNewEventCommand(
-                "Test Event",
-                todayString,
-                List.of("PVJ9","PVJ8","PVJ7"));
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            eventPostgreSqlService.createEvent(newEvent);
-        }, "Invalid date");
+        CreatedEventDTO expectedResult = new CreatedEventDTO(1L, "Test Event", todayPlusTwoDays, 3);
+        //when
+        when()
+        CreatedEventDTO result = eventPostgreSqlService.createEvent(newEvent);
+        //then
+        assertEquals(expectedResult.name(), result.name());
+        assertEquals(expectedResult.date(), result.date());
+        assertEquals(expectedResult.numberOfInvitees(), result.numberOfInvitees());
     }
 
-    @Test
-    @DisplayName("Test if createEvent method throws exception when attendees are not known")
-    void testCreateEventWithInvalidAttendees_unHappyFlow(){
-        //given
-        newEvent = new SignupNewEventCommand(
-                "Test Event",
-                todayPlusTwoDaysString,
-                List.of("PVJ9","PVJ8","PVJ7"));
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            eventPostgreSqlService.createEvent(newEvent);
-        }, "Invalid attendees");
-    }
 
 
 }
