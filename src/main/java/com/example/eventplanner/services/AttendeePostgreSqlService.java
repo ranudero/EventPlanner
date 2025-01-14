@@ -4,6 +4,7 @@ import com.example.eventplanner.domain.PersonalCode;
 import com.example.eventplanner.domain.Attendee;
 import com.example.eventplanner.dtos.CreatedAttendeeDTO;
 import com.example.eventplanner.dtos.SignupNewAttendeeCommand;
+import com.example.eventplanner.exceptions.AttendeeWithPersonalCodeNotFoundException;
 import com.example.eventplanner.repositories.AttendeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class AttendeePostgreSqlService implements AttendeeService {
     @Override
     public Attendee getAttendeeIfExists(PersonalCode personalCode){
         return attendeeRepository.findByCode(personalCode)
-                .orElseThrow(() -> new IllegalArgumentException("Attendee with personalCode not found: " + personalCode));
+                .orElseThrow(() -> new AttendeeWithPersonalCodeNotFoundException(personalCode));
     }
 
 }

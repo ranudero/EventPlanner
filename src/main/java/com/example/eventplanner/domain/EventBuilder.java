@@ -1,6 +1,7 @@
 package com.example.eventplanner.domain;
 
 import com.example.eventplanner.utils.CustomDateTimeFormatter;
+import com.example.eventplanner.exceptions.DateNotInFutureException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,14 +22,22 @@ public class EventBuilder {
     }
 
     public EventBuilder withStart(LocalDateTime start) {
-        //TODO add validation for date
+
+        if (!validateDateIsInFuture(start)){
+            throw new DateNotInFutureException();
+        }
         this.start = start;
         return this;
     }
 
+    private boolean validateDateIsInFuture(LocalDateTime start){
+        LocalDate verifyDate = LocalDate.now();
+        return verifyDate.isBefore(start.toLocalDate());
+    }
+
     public EventBuilder withStart(String start){
-        this.start = CustomDateTimeFormatter.parseToDateTime(start);
-        return this;
+        LocalDateTime parsedStart = CustomDateTimeFormatter.parseToDateTime(start);
+        return withStart(parsedStart);
     }
 
     public EventBuilder withAttendeeList(Set<Attendee> attendeeList) {

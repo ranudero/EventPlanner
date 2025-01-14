@@ -8,12 +8,9 @@ import com.example.eventplanner.domain.PersonalCode;
 import com.example.eventplanner.dtos.CreatedEventDTO;
 import com.example.eventplanner.dtos.SignupNewEventCommand;
 import com.example.eventplanner.repositories.EventRepository;
-import com.example.eventplanner.utils.CustomDateTimeFormatter;
-import com.example.eventplanner.utils.WrongDateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,9 +23,7 @@ public class EventPostgreSqlService implements EventService {
 
     @Override
     public CreatedEventDTO createEvent(SignupNewEventCommand newEvent) {
-        if (!validateDateEvent(newEvent)) {
-            throw new WrongDateException("Start date should be at least tomorrow or further in the future.");
-        }
+
         Set<Attendee> attendees = getAttendeesForEvent(newEvent);
         Event event = new EventBuilder()
                 .withName(newEvent.name())
@@ -48,8 +43,4 @@ public class EventPostgreSqlService implements EventService {
                 .collect(Collectors.toSet());
     }
 
-    private boolean validateDateEvent(SignupNewEventCommand newEvent) {
-        LocalDate eventDate = CustomDateTimeFormatter.parseToDateTime(newEvent.date()).toLocalDate();
-        return eventDate.isAfter(LocalDate.now().plusDays(1));
-    }
 }
