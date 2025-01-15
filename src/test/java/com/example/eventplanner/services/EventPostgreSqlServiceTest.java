@@ -55,8 +55,7 @@ public class EventPostgreSqlServiceTest {
         mockAttendees = Set.of(
                 new Attendee("Lander Verbrugghe", new PersonalCode("PVJ9")),
                 new Attendee("Nick Verbrugghe", new PersonalCode("PVJ8")),
-                new Attendee("Sissi Verbrugghe", new PersonalCode("PVJ7")),
-                new Attendee("Lander Verbrugghe", new PersonalCode("PVJ9"))
+                new Attendee("Sissi Verbrugghe", new PersonalCode("PVJ7"))
         );
 
         today = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
@@ -86,8 +85,14 @@ public class EventPostgreSqlServiceTest {
         CreatedEventDTO expectedResult = new CreatedEventDTO(1L, "Test Event", todayPlusTwoDays, 3);
 
         //when
-        Queue<Attendee> mockAttendeesQueue = new PriorityQueue<>(mockAttendees);
-        when(attendeeService.getAttendeeIfExists(any(PersonalCode.class))).thenReturn(mockAttendeesQueue.poll());
+        doAnswer(invocation -> {
+            PersonalCode attendeeCode = invocation.getArgument(0);
+            return mockAttendees.stream()
+                    .filter(
+                            a -> a.getCode().equals(attendeeCode)
+                    ).findFirst()
+                    .get();
+        }).when(attendeeService).getAttendeeIfExists(any());
         doAnswer(invocation -> {
             Event event = invocation.getArgument(0);
             event.setId(1L);
