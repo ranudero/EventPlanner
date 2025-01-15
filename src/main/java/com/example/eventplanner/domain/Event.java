@@ -10,6 +10,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @EqualsAndHashCode
 @Table(name = "event")
 public class Event {
@@ -37,5 +38,13 @@ public class Event {
     }
 
 
-
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", start=" + start +
+                ", attendeeList=" + attendeeList +
+                '}';
+    }
 }

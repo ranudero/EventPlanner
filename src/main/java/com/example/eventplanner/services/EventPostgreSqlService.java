@@ -30,8 +30,7 @@ public class EventPostgreSqlService implements EventService {
                 .withStart(newEvent.date())
                 .withAttendeeList(attendees)
                 .build();
-        eventRepository.save(event);
-
+        event = eventRepository.save(event);
         return CreatedEventDTO.from(event);
 
     }
