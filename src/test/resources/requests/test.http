@@ -34,10 +34,10 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "First Event",
-  "date": "2025-01-22 12:00:00",
+  "name": "Another Event",
+  "date": "2025-03-22 12:00:00",
   "attendees": [
-    "PVJ9",
+    "PVJ6",
     "PVJ8",
     "PVJ7"
   ]
@@ -51,9 +51,9 @@ Content-Type: application/json
 
 {
   "name": "Second Event",
-  "date": "2025-01-22 12:00:00",
+  "date": "2025-01-15 12:00:00",
   "attendees": [
-    "PVJ3",
+    "PVJ9",
     "PVJ8",
     "PVJ7"
   ]
