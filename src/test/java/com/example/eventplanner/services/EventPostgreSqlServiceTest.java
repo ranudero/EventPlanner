@@ -71,7 +71,7 @@ public class EventPostgreSqlServiceTest {
 
     /*
     todo: Add tests for testing the UseCases
-      - [ ] Creating a correct event
+      - [x] Creating a correct event
       - [ ] Check if the list of attendees removes duplications
       - [ ] Check if the list of attendees containing a non existent attendee, throws an exception
       - [ ] Check if a start date on today, throws an exception
