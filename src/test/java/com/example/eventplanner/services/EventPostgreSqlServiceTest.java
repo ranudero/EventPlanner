@@ -19,6 +19,7 @@ import org.mockito.MockitoAnnotations;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -58,17 +59,10 @@ public class EventPostgreSqlServiceTest {
                 new Attendee("Lander Verbrugghe", new PersonalCode("PVJ9"))
         );
 
-        Queue<Attendee> mockAttendeesQueue = new PriorityQueue<>(mockAttendees);
-        when(attendeeService.getAttendeeIfExists(any(PersonalCode.class))).thenReturn(mockAttendeesQueue.poll());
-
-        // todo: We need to mock the save method so it presents a generated ID for the Event.
-        when(eventRepository.save(any(Event.class))).thenReturn(new Event(1L, "Test Event", todayPlusTwoDays, mockAttendees));
-
-        today = LocalDateTime.now();
-        todayString = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        todayPlusTwoDays = today.plusDays(2);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        todayPlusTwoDaysString = todayPlusTwoDays.format(formatter);
+        today = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        todayString = CustomDateTimeFormatter.formatToDate(today);
+        todayPlusTwoDays = today.plusDays(2).truncatedTo(ChronoUnit.SECONDS);
+        todayPlusTwoDaysString = CustomDateTimeFormatter.formatToDate(todayPlusTwoDays);
 
         newEvent = new SignupNewEventCommand(
                 "Test Event",
