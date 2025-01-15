@@ -7,6 +7,7 @@ import com.example.eventplanner.dtos.CreatedEventDTO;
 import com.example.eventplanner.dtos.SignupNewAttendeeCommand;
 import com.example.eventplanner.dtos.SignupNewEventCommand;
 import com.example.eventplanner.repositories.EventRepository;
+import com.example.eventplanner.utils.CustomDateTimeFormatter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -24,9 +25,9 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
 @Tag("unit-tests")
@@ -44,12 +45,13 @@ public class EventPostgreSqlServiceTest {
     private LocalDateTime today;
     private String todayString;
     private String todayPlusTwoDaysString;
+    Set<Attendee> mockAttendees;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        Set<Attendee> mockAttendees = Set.of(
+        mockAttendees = Set.of(
                 new Attendee("Lander Verbrugghe", new PersonalCode("PVJ9")),
                 new Attendee("Nick Verbrugghe", new PersonalCode("PVJ8")),
                 new Attendee("Sissi Verbrugghe", new PersonalCode("PVJ7")),
@@ -88,9 +90,20 @@ public class EventPostgreSqlServiceTest {
     void testCreateEvent_happyFlow() {
         //given
         CreatedEventDTO expectedResult = new CreatedEventDTO(1L, "Test Event", todayPlusTwoDays, 3);
+
         //when
+        Queue<Attendee> mockAttendeesQueue = new PriorityQueue<>(mockAttendees);
+        when(attendeeService.getAttendeeIfExists(any(PersonalCode.class))).thenReturn(mockAttendeesQueue.poll());
+        doAnswer(invocation -> {
+            Event event = invocation.getArgument(0);
+            event.setId(1L);
+            return event;
+        }).when(eventRepository).save(any(Event.class));
         CreatedEventDTO result = eventPostgreSqlService.createEvent(newEvent);
+
         //then
+        assertNotNull(result);
+        assertEquals(expectedResult.id(), result.id());
         assertEquals(expectedResult.name(), result.name());
         assertEquals(expectedResult.date(), result.date());
         assertEquals(expectedResult.numberOfInvitees(), result.numberOfInvitees());
