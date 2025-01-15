@@ -19,7 +19,10 @@ import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -46,6 +49,19 @@ public class EventPostgreSqlServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
+        Set<Attendee> mockAttendees = Set.of(
+                new Attendee("Lander Verbrugghe", new PersonalCode("PVJ9")),
+                new Attendee("Nick Verbrugghe", new PersonalCode("PVJ8")),
+                new Attendee("Sissi Verbrugghe", new PersonalCode("PVJ7")),
+                new Attendee("Lander Verbrugghe", new PersonalCode("PVJ9"))
+        );
+
+        Queue<Attendee> mockAttendeesQueue = new PriorityQueue<>(mockAttendees);
+        when(attendeeService.getAttendeeIfExists(any(PersonalCode.class))).thenReturn(mockAttendeesQueue.poll());
+
+        // todo: We need to mock the save method so it presents a generated ID for the Event.
+        when(eventRepository.save(any(Event.class))).thenReturn(new Event(1L, "Test Event", todayPlusTwoDays, mockAttendees));
+
         today = LocalDateTime.now();
         todayString = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         todayPlusTwoDays = today.plusDays(2);
@@ -58,13 +74,21 @@ public class EventPostgreSqlServiceTest {
                 List.of("PVJ9","PVJ8","PVJ7","PVJ9"));
     }
 
+    /*
+    todo: Add tests for testing the UseCases
+      - [ ] Creating a correct event
+      - [ ] Check if the list of attendees removes duplications
+      - [ ] Check if the list of attendees containing a non existent attendee, throws an exception
+      - [ ] Check if a start date on today, throws an exception
+      - [ ] Check if a start date in the past, throws an exception
+     */
+
     @Test
     @DisplayName("Test if createEvent method returns the correct DTO")
     void testCreateEvent_happyFlow() {
         //given
         CreatedEventDTO expectedResult = new CreatedEventDTO(1L, "Test Event", todayPlusTwoDays, 3);
         //when
-        when()
         CreatedEventDTO result = eventPostgreSqlService.createEvent(newEvent);
         //then
         assertEquals(expectedResult.name(), result.name());
