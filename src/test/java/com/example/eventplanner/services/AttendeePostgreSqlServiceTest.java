@@ -3,16 +3,23 @@ package com.example.eventplanner.services;
 import com.example.eventplanner.domain.Attendee;
 import com.example.eventplanner.domain.PersonalCode;
 import com.example.eventplanner.dtos.SignupNewAttendeeCommand;
+import com.example.eventplanner.exceptions.AttendeeWithPersonalCodeNotFoundException;
 import com.example.eventplanner.repositories.AttendeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import static org.mockito.Mockito.verify;
+
+import java.util.Optional;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @Tag("unit-tests")
 public class AttendeePostgreSqlServiceTest {
@@ -22,9 +29,17 @@ public class AttendeePostgreSqlServiceTest {
     @InjectMocks
     private AttendeePostgreSqlService attendeePostgreSqlService;
 
+    Set<Attendee> mockAttendees;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        mockAttendees = Set.of(
+                new Attendee("Lander Verbrugghe", new PersonalCode("PVJ9")),
+                new Attendee("Nick Verbrugghe", new PersonalCode("PVJ8")),
+                new Attendee("Sissi Verbrugghe", new PersonalCode("PVJ7"))
+        );
     }
 
     @Test
@@ -40,5 +55,33 @@ public class AttendeePostgreSqlServiceTest {
 
         // Then
         verify(attendeeRepository).save(any(Attendee.class));
+    }
+
+    @Test
+    @DisplayName("Test if getAttendeeIfExists method returns the attendee")
+    void testGetAttendeeIfExists_happyFlow() {
+        // Given
+        PersonalCode code = new PersonalCode("PVJ9");
+        Attendee expectedAttendee = new Attendee("Lander Verbrugghe", code);
+        when(attendeeRepository.findByCode(code)).thenReturn(Optional.of(expectedAttendee));
+
+        // When
+        Attendee acutalAttendee = attendeePostgreSqlService.getAttendeeIfExists(code);
+
+        // Then
+        assertEquals(expectedAttendee, acutalAttendee);
+    }
+
+    @Test
+    @DisplayName("Test if getAttendeeIfExists method throws exception when attendee does not exist")
+    void testGetAttendeeIfExists_unHappyFlow() {
+        // Given
+        PersonalCode code = new PersonalCode("PVJ3");
+        Attendee expectedAttendee = new Attendee("Lander Verbrugghe", code);
+
+        //when
+        assertThrows(AttendeeWithPersonalCodeNotFoundException.class, () -> {
+            attendeePostgreSqlService.getAttendeeIfExists(code);
+        });
     }
 }
