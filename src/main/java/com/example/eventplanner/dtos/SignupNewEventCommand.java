@@ -15,13 +15,7 @@ import java.util.List;
 public record SignupNewEventCommand(
         @NotBlank String name,
         @NotBlank String date,
-        @NotBlank List<String> attendees
+        @NotBlank Set<String> attendees
 ) {
-    public Event toEvent() {
-        LocalDateTime start = CustomDateTimeFormatter.parseToDateTime(this.date);
-        Set<Attendee> attendeeList = attendees.stream()
-                .map(code -> new Attendee("unkown", new PersonalCode(code)))
-                .collect(Collectors.toSet());
-        return new Event(name, start, attendeeList);
-    }
+
 }

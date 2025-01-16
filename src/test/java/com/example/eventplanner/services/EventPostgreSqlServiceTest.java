@@ -20,16 +20,12 @@ import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @Tag("unit-tests")
 public class EventPostgreSqlServiceTest {
@@ -63,19 +59,21 @@ public class EventPostgreSqlServiceTest {
         todayPlusTwoDays = today.plusDays(2).truncatedTo(ChronoUnit.SECONDS);
         todayPlusTwoDaysString = CustomDateTimeFormatter.formatToDate(todayPlusTwoDays);
 
+        Set<String> attendeeCodes = new TreeSet<>(List.of("PVJ9","PVJ8","PVJ7","PVJ9","PVJ8","PVJ7"));
+
         newEvent = new SignupNewEventCommand(
                 "Test Event",
                 todayPlusTwoDaysString,
-                List.of("PVJ9","PVJ8","PVJ7","PVJ9"));
+                attendeeCodes);
     }
 
     /*
     todo: Add tests for testing the UseCases
       - [x] Creating a correct event
-      - [ ] Check if the list of attendees removes duplications
+      - [X] Check if the list of attendees removes duplications
       - [ ] Check if the list of attendees containing a non existent attendee, throws an exception
-      - [ ] Check if a start date on today, throws an exception
-      - [ ] Check if a start date in the past, throws an exception
+      - [x] Check if a start date on today, throws an exception
+      - [x] Check if a start date in the past, throws an exception
      */
 
     @Test
@@ -106,6 +104,7 @@ public class EventPostgreSqlServiceTest {
         assertEquals(expectedResult.name(), result.name());
         assertEquals(expectedResult.date(), result.date());
         assertEquals(expectedResult.numberOfInvitees(), result.numberOfInvitees());
+        verify(attendeeService, times(3)).getAttendeeIfExists(any());
     }
 
 
