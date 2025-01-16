@@ -43,4 +43,8 @@ public class Attendee implements Comparable<Attendee> {
     public int hashCode() {
         return Objects.hash(code);
     }
+
+    public PersonalCode getPersonalCode() {
+        return code;
+    }
 }

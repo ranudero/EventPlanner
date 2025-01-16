@@ -1,6 +1,6 @@
 package com.example.eventplanner.apis;
 
-import org.postgresql.util.PSQLException;
+import com.example.eventplanner.exceptions.AttendeeWithDuplicatePersonalCodeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,9 +14,9 @@ public class ValidationExceptionHandler {
         return new ResponseEntity<>(new ExceptionDTO(ex.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(PSQLException.class)
-    public ResponseEntity<ExceptionDTO> handlePSQLException(PSQLException ex){
-        return new ResponseEntity<>(new ExceptionDTO(ex.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(AttendeeWithDuplicatePersonalCodeException.class)
+    public ResponseEntity<ExceptionDTO> handleDuplicatePersonalCode(AttendeeWithDuplicatePersonalCodeException ex){
+        return new ResponseEntity<>(new ExceptionDTO(ex.getMessage(), HttpStatus.CONFLICT), HttpStatus.CONFLICT);
     }
 
     public record ExceptionDTO(String message, HttpStatus status) {
