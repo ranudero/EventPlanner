@@ -18,6 +18,7 @@ public class Attendee implements Comparable<Attendee> {
     private Long id;
     private String name;
     @Embedded
+    @Column(unique = true)
     private PersonalCode code;
 
     public Attendee(String name, PersonalCode code) {

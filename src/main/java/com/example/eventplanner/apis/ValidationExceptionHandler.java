@@ -1,5 +1,6 @@
 package com.example.eventplanner.apis;
 
+import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,6 +11,11 @@ public class ValidationExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ExceptionDTO> handleIllegalArgumentException(IllegalArgumentException ex){
+        return new ResponseEntity<>(new ExceptionDTO(ex.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PSQLException.class)
+    public ResponseEntity<ExceptionDTO> handlePSQLException(PSQLException ex){
         return new ResponseEntity<>(new ExceptionDTO(ex.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
     }
 
