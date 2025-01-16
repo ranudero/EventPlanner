@@ -3,8 +3,10 @@ package com.example.eventplanner.services;
 import com.example.eventplanner.domain.Attendee;
 import com.example.eventplanner.domain.PersonalCode;
 import com.example.eventplanner.dtos.SignupNewAttendeeCommand;
+import com.example.eventplanner.exceptions.AttendeeWithDuplicatePersonalCodeException;
 import com.example.eventplanner.exceptions.AttendeeWithPersonalCodeNotFoundException;
 import com.example.eventplanner.repositories.AttendeeRepository;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -12,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.Optional;
 import java.util.Set;
@@ -44,7 +47,7 @@ public class AttendeePostgreSqlServiceTest {
 
     @Test
     @DisplayName("Test if addAttendee method saves the attendee")
-    void testAddAttendee_happyFlow() {
+    void testAddAttendee_happyFlow() throws AttendeeWithDuplicatePersonalCodeException {
         // Given
         String name = "Lander Verbrugghe";
         PersonalCode code = new PersonalCode("PVJ9");
@@ -83,5 +86,20 @@ public class AttendeePostgreSqlServiceTest {
         assertThrows(AttendeeWithPersonalCodeNotFoundException.class, () -> {
             attendeePostgreSqlService.getAttendeeIfExists(code);
         });
+    }
+
+    @Test
+    @DisplayName("Test if addAttendee throws exception when Personal Code already exists")
+    void testAddAttendeeWithExistingPersonalCode_ShouldThrowException() {
+        SignupNewAttendeeCommand newAttendee = new SignupNewAttendeeCommand(
+                "Lander Verbrugghe",
+                "PVJ9"
+        );
+
+        // Mock that when the save method is called, it throws a DataIntegrityViolationException because the personal code already exists
+        when(attendeeRepository.save(any())).thenThrow(new DataIntegrityViolationException(any()));
+
+        assertThrows(AttendeeWithDuplicatePersonalCodeException.class, () -> attendeePostgreSqlService.addAttendee(newAttendee));
+
     }
 }
