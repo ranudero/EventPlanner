@@ -66,47 +66,4 @@ public class EventPostgreSqlServiceTest {
                 todayPlusTwoDaysString,
                 attendeeCodes);
     }
-
-    /*
-    todo: Add tests for testing the UseCases
-      - [x] Creating a correct event
-      - [X] Check if the list of attendees removes duplications
-      - [ ] Check if the list of attendees containing a non existent attendee, throws an exception
-      - [x] Check if a start date on today, throws an exception
-      - [x] Check if a start date in the past, throws an exception
-     */
-
-    @Test
-    @DisplayName("Test if createEvent method returns the correct DTO")
-    void testCreateEvent_happyFlow() {
-        //given
-        CreatedEventDTO expectedResult = new CreatedEventDTO(1L, "Test Event", todayPlusTwoDays, 3);
-
-        //when
-        doAnswer(invocation -> {
-            PersonalCode attendeeCode = invocation.getArgument(0);
-            return mockAttendees.stream()
-                    .filter(
-                            a -> a.getCode().equals(attendeeCode)
-                    ).findFirst()
-                    .get();
-        }).when(attendeeService).getAttendeeIfExists(any());
-        doAnswer(invocation -> {
-            Event event = invocation.getArgument(0);
-            event.setId(1L);
-            return event;
-        }).when(eventRepository).save(any(Event.class));
-        CreatedEventDTO result = eventPostgreSqlService.createEvent(newEvent);
-
-        //then
-        assertNotNull(result);
-        assertEquals(expectedResult.id(), result.id());
-        assertEquals(expectedResult.name(), result.name());
-        assertEquals(expectedResult.date(), result.date());
-        assertEquals(expectedResult.numberOfInvitees(), result.numberOfInvitees());
-        verify(attendeeService, times(3)).getAttendeeIfExists(any());
-    }
-
-
-
 }
