@@ -8,6 +8,6 @@ import com.example.eventplanner.exceptions.AttendeeWithDuplicatePersonalCodeExce
 
 
 public interface AttendeeService {
-    CreatedAttendeeDTO addAttendee(SignupNewAttendeeCommand newAttendee) throws AttendeeWithDuplicatePersonalCodeException;
+    CreatedAttendeeDTO addAttendee(SignupNewAttendeeCommand newAttendee);
     Attendee getAttendeeIfExists(PersonalCode personalCode);
 }

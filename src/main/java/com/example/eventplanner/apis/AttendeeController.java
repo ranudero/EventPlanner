@@ -18,7 +18,7 @@ public class AttendeeController {
     private final AttendeeService attendeePostgreSqlService;
 
     @PostMapping
-    public CreatedAttendeeDTO addAttendee(@RequestBody @Valid SignupNewAttendeeCommand newAttendee) throws AttendeeWithDuplicatePersonalCodeException {
+    public CreatedAttendeeDTO addAttendee(@RequestBody @Valid SignupNewAttendeeCommand newAttendee){
         return attendeePostgreSqlService.addAttendee(newAttendee);
     }
 

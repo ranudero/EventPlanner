@@ -47,7 +47,7 @@ public class AttendeePostgreSqlServiceTest {
 
     @Test
     @DisplayName("Test if addAttendee method saves the attendee")
-    void testAddAttendee_happyFlow() throws AttendeeWithDuplicatePersonalCodeException {
+    void testAddAttendee_happyFlow(){
         // Given
         String name = "Lander Verbrugghe";
         PersonalCode code = new PersonalCode("PVJ9");
