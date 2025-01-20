@@ -1,31 +1,21 @@
 package com.example.eventplanner.services;
 
 import com.example.eventplanner.domain.Attendee;
-import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.PersonalCode;
-import com.example.eventplanner.dtos.CreatedEventDTO;
-import com.example.eventplanner.dtos.SignupNewAttendeeCommand;
 import com.example.eventplanner.dtos.SignupNewEventCommand;
 import com.example.eventplanner.repositories.EventRepository;
 import com.example.eventplanner.utils.CustomDateTimeFormatter;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Tag("unit-tests")
 public class EventPostgreSqlServiceTest {
