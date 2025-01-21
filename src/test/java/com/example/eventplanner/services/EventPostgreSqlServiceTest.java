@@ -3,6 +3,7 @@ package com.example.eventplanner.services;
 import com.example.eventplanner.domain.Attendee;
 import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.PersonalCode;
+import com.example.eventplanner.dtos.AttendeeDTO;
 import com.example.eventplanner.dtos.RetrievedEventDTO;
 import com.example.eventplanner.dtos.SignupNewEventCommand;
 import com.example.eventplanner.exceptions.AttendeeWithPersonalCodeNotFoundException;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -96,7 +98,7 @@ public class EventPostgreSqlServiceTest {
                     "Test event",
                     startEventOne,
                     attendeeListOne.size(),
-                    attendeeListOne
+                    attendeeListOne.stream().map(AttendeeDTO::from).collect(Collectors.toSet())
             );
 
             //when

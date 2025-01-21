@@ -5,13 +5,17 @@ import com.example.eventplanner.domain.Event;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public record RetrievedEventDTO(String name,
                                 LocalDateTime startDate,
                                 int numberOfInvitees,
-                                Set<Attendee> attendeeList
+                                Set<AttendeeDTO> attendeeList
                                 ) {
     public static RetrievedEventDTO from(Event event) {
-        return new RetrievedEventDTO(event.getName(),event.getStart(),event.getNumberOfInvitees(),event.getAttendeeList());
+        Set<AttendeeDTO> attendeeDTOs = event.getAttendeeList().stream()
+                .map(AttendeeDTO::from)
+                .collect(Collectors.toSet());
+        return new RetrievedEventDTO(event.getName(),event.getStart(),event.getNumberOfInvitees(),attendeeDTOs);
     }
 }

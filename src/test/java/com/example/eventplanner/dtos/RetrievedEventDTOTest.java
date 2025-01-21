@@ -30,7 +30,7 @@ class RetrievedEventDTOTest {
                 "Test Event",
                 today,
                 1,
-                Set.of(attendee)
+                Set.of(AttendeeDTO.from(attendee))
         );
 
         //when
