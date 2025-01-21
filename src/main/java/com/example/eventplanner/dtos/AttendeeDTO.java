@@ -1,7 +1,6 @@
 package com.example.eventplanner.dtos;
 
 import com.example.eventplanner.domain.Attendee;
-import com.example.eventplanner.domain.PersonalCode;
 
 public record AttendeeDTO(String name, String code) {
     public static AttendeeDTO from(Attendee attendee) {
