@@ -1,21 +1,30 @@
 package com.example.eventplanner.services;
 
 import com.example.eventplanner.domain.Attendee;
+import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.PersonalCode;
+import com.example.eventplanner.dtos.RetrievedEventDTO;
 import com.example.eventplanner.dtos.SignupNewEventCommand;
+import com.example.eventplanner.exceptions.AttendeeWithPersonalCodeNotFoundException;
+import com.example.eventplanner.exceptions.EventWithNameNotFoundException;
 import com.example.eventplanner.repositories.EventRepository;
 import com.example.eventplanner.utils.CustomDateTimeFormatter;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.NestedTestConfiguration;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @Tag("unit-tests")
 public class EventPostgreSqlServiceTest {
@@ -55,5 +64,46 @@ public class EventPostgreSqlServiceTest {
                 "Test Event",
                 todayPlusTwoDaysString,
                 attendeeCodes);
+    }
+
+    @Nested
+    class FetchEventUseCase {
+
+        @Test
+        @DisplayName("Test is fetchEvent returns the correct Event information")
+        void testFetchEvent_happyFlow(){
+
+            String eventName = "Test event";
+            LocalDateTime startEvent = LocalDateTime.now();
+            Set<Attendee> attendeeList = Set.of(
+                    new Attendee("Lander Verbrugghe", new PersonalCode("PVJ9")),
+                    new Attendee("Nick Bauters",new PersonalCode("7DBB"))
+            );
+            Event repositoryEvent = new Event(eventName,startEvent,attendeeList);
+            RetrievedEventDTO expectedResult = new RetrievedEventDTO(
+                    "Test event",
+                    startEvent,
+                    attendeeList.size(),
+                    attendeeList
+            );
+
+            //when
+            when(eventRepository.findAllByName(any())).thenReturn(List.of(repositoryEvent));
+            RetrievedEventDTO actualEvent = eventPostgreSqlService.fetchEvent(eventName);
+
+            //then
+            assertNotNull(actualEvent);
+            assertEquals(expectedResult.name(),actualEvent.name());
+            assertEquals(expectedResult.startDate(), actualEvent.startDate());
+            assertEquals(expectedResult.numberOfInvitees(),actualEvent.numberOfInvitees());
+            assertEquals(expectedResult.attendeeList(), actualEvent.attendeeList());
+        }
+
+        @Test
+        @DisplayName("Given event name not known then EventWithNameNotFoundException thrown")
+        void testEventNameNotKnow_unHappyPath(){
+            when(eventRepository.findByName(any())).thenReturn(Optional.empty());
+            assertThrows(EventWithNameNotFoundException.class,()-> eventPostgreSqlService.getEventByName("Feest"));
+        }
     }
 }
