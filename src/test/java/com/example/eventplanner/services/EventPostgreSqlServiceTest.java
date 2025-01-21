@@ -73,23 +73,35 @@ public class EventPostgreSqlServiceTest {
         @DisplayName("Test is fetchEvent returns the correct Event information")
         void testFetchEvent_happyFlow(){
 
-            String eventName = "Test event";
-            LocalDateTime startEvent = LocalDateTime.now();
-            Set<Attendee> attendeeList = Set.of(
+            //Given
+            String eventNameOne = "Test event";
+            LocalDateTime startEventOne = LocalDateTime.now();
+            Set<Attendee> attendeeListOne = Set.of(
                     new Attendee("Lander Verbrugghe", new PersonalCode("PVJ9")),
                     new Attendee("Nick Bauters",new PersonalCode("7DBB"))
             );
-            Event repositoryEvent = new Event(eventName,startEvent,attendeeList);
+            Event repositoryEventOne = new Event(eventNameOne,startEventOne,attendeeListOne);
+
+            String eventNameTwo = "Test event";
+            LocalDateTime startEventTwo = LocalDateTime.now().plusDays(7);
+            Set<Attendee> attendeeListTwo = Set.of(
+                    new Attendee("John Doe", new PersonalCode("AABB")),
+                    new Attendee("Rafa Nadal", new PersonalCode("BBCC")),
+                    new Attendee("Roger Federer", new PersonalCode("CCDD")
+                    )
+            );
+            Event repositoryEventTwo = new Event(eventNameTwo,startEventTwo,attendeeListTwo);
+
             RetrievedEventDTO expectedResult = new RetrievedEventDTO(
                     "Test event",
-                    startEvent,
-                    attendeeList.size(),
-                    attendeeList
+                    startEventOne,
+                    attendeeListOne.size(),
+                    attendeeListOne
             );
 
             //when
-            when(eventRepository.findAllByName(any())).thenReturn(List.of(repositoryEvent));
-            RetrievedEventDTO actualEvent = eventPostgreSqlService.fetchEvent(eventName);
+            when(eventRepository.findAllByName(any())).thenReturn(List.of(repositoryEventOne,repositoryEventTwo));
+            RetrievedEventDTO actualEvent = eventPostgreSqlService.fetchEvent(eventNameOne);
 
             //then
             assertNotNull(actualEvent);
