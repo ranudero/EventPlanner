@@ -49,7 +49,7 @@ public class EventPostgreSqlService implements EventService {
                 .collect(Collectors.toSet());
     }
 
-    public Event getEventByName(String eventName) {
+    private Event getEventByName(String eventName) {
         List<Event> events = eventRepository.findAllByName(eventName);
         if (events.isEmpty()) {
             throw new EventWithNameNotFoundException(eventName);
@@ -59,6 +59,7 @@ public class EventPostgreSqlService implements EventService {
                 .orElseThrow(() -> new EventWithNameNotFoundException(eventName));
     }
 
+    @Override
     public RetrievedEventDTO fetchEvent(String eventName) {
         Event fetchedEvent = getEventByName(eventName);
         return RetrievedEventDTO.from(fetchedEvent);

@@ -114,8 +114,8 @@ public class EventPostgreSqlServiceTest {
         @Test
         @DisplayName("Given event name not known then EventWithNameNotFoundException thrown")
         void testEventNameNotKnow_unHappyPath(){
-            when(eventRepository.findByName(any())).thenReturn(Optional.empty());
-            assertThrows(EventWithNameNotFoundException.class,()-> eventPostgreSqlService.getEventByName("Feest"));
+            when(eventRepository.findAllByName(any())).thenReturn(List.of());
+            assertThrows(EventWithNameNotFoundException.class,()-> eventPostgreSqlService.fetchEvent("Feest"));
         }
     }
 }
