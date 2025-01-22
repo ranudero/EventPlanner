@@ -3,8 +3,6 @@ package com.example.eventplanner.utils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-// todo: O, o not tested yet
-
 public class CustomDateTimeFormatter {
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 

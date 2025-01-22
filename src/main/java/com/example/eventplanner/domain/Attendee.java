@@ -1,9 +1,14 @@
 package com.example.eventplanner.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.util.comparator.Comparators;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -20,10 +25,17 @@ public class Attendee implements Comparable<Attendee> {
     @Embedded
     @Column(unique = true)
     private PersonalCode code;
+    @ManyToMany(mappedBy = "attendeeList")
+    private List<Event> events = new ArrayList<>();
 
-    public Attendee(String name, PersonalCode code) {
+    public Attendee(String name, PersonalCode code, List<Event> events) {
         this.name = name;
         this.code = code;
+        this.events = events;
+    }
+
+    public Attendee(String name, PersonalCode code) {
+        this(name, code, new ArrayList<>());
     }
 
     @Override
@@ -47,4 +59,9 @@ public class Attendee implements Comparable<Attendee> {
     public PersonalCode getPersonalCode() {
         return code;
     }
+
+    public void subscribeToEvent(Event event) {
+        events.add(event);
+    }
+
 }

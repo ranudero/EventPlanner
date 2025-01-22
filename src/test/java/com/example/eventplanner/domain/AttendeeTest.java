@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -75,4 +78,20 @@ public class AttendeeTest {
 
     }
 
+    @Test
+    @DisplayName("Subscribe an attendee to an event")
+    void testSubscribeToEvent_happyFlow() {
+        // Given
+        Attendee attendee = new Attendee("Lander Verbrugghe", new PersonalCode("PVJ9"));
+        Event event = new Event("Birthday Party", LocalDateTime.now(), Set.of(attendee));
+
+        // When
+        attendee.subscribeToEvent(event);
+
+        //Then
+        assertNotNull(attendee.getEvents());
+        assertNotEquals(0, attendee.getEvents().size());
+        assertTrue(attendee.getEvents().contains(event), "Attendee should be subscribed to the event");
+
+    }
 }
