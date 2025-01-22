@@ -23,6 +23,7 @@ public class Attendee implements Comparable<Attendee> {
     private Long id;
     private String name;
     @Embedded
+    @Column(unique = true)
     private PersonalCode code;
     @ManyToMany(mappedBy = "attendeeList")
     private List<Event> events = new ArrayList<>();
@@ -62,4 +63,5 @@ public class Attendee implements Comparable<Attendee> {
     public void subscribeToEvent(Event event) {
         events.add(event);
     }
+
 }

@@ -5,9 +5,11 @@ import com.example.eventplanner.domain.PersonalCode;
 import com.example.eventplanner.dtos.CreatedAttendeeDTO;
 import com.example.eventplanner.dtos.RetrievedAttendeeDTO;
 import com.example.eventplanner.dtos.SignupNewAttendeeCommand;
+import com.example.eventplanner.exceptions.AttendeeWithDuplicatePersonalCodeException;
 import com.example.eventplanner.exceptions.AttendeeWithPersonalCodeNotFoundException;
 import com.example.eventplanner.repositories.AttendeeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +21,11 @@ public class AttendeePostgreSqlService implements AttendeeService {
     @Override
     public CreatedAttendeeDTO addAttendee(SignupNewAttendeeCommand newAttendee) {
         Attendee attendee = newAttendee.toAttendee();
-        attendeeRepository.save(attendee);
+        try {
+            attendeeRepository.save(attendee);
+        } catch (DataIntegrityViolationException e) {
+            throw new AttendeeWithDuplicatePersonalCodeException(attendee.getPersonalCode());
+        }
         return CreatedAttendeeDTO.from(attendee);
     }
 

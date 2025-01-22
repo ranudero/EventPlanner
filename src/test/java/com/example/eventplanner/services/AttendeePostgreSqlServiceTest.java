@@ -5,12 +5,14 @@ import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.PersonalCode;
 import com.example.eventplanner.dtos.RetrievedAttendeeDTO;
 import com.example.eventplanner.dtos.SignupNewAttendeeCommand;
+import com.example.eventplanner.exceptions.AttendeeWithDuplicatePersonalCodeException;
 import com.example.eventplanner.exceptions.AttendeeWithPersonalCodeNotFoundException;
 import com.example.eventplanner.repositories.AttendeeRepository;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,7 +43,6 @@ public class AttendeePostgreSqlServiceTest {
                 new Attendee("Sissi Verbrugghe", new PersonalCode("PVJ7"))
         );
     }
-
 
     @Nested
     class FetchAttendeeUseCase {
@@ -139,6 +140,5 @@ public class AttendeePostgreSqlServiceTest {
             assertThrows(IllegalArgumentException.class,() -> attendeePostgreSqlService.addAttendee(new SignupNewAttendeeCommand(name,code)));
         }
     }
-
 
 }
