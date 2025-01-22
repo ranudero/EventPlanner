@@ -15,7 +15,7 @@ public class AttendeeController {
     private final AttendeeService attendeePostgreSqlService;
 
     @PostMapping
-    public CreatedAttendeeDTO addAttendee(@RequestBody @Valid SignupNewAttendeeCommand newAttendee) {
+    public CreatedAttendeeDTO addAttendee(@RequestBody @Valid SignupNewAttendeeCommand newAttendee){
         return attendeePostgreSqlService.addAttendee(newAttendee);
     }
 

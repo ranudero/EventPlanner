@@ -5,6 +5,7 @@ import com.example.eventplanner.domain.PersonalCode;
 import com.example.eventplanner.dtos.CreatedAttendeeDTO;
 import com.example.eventplanner.dtos.RetrievedAttendeeDTO;
 import com.example.eventplanner.dtos.SignupNewAttendeeCommand;
+import com.example.eventplanner.exceptions.AttendeeWithDuplicatePersonalCodeException;
 
 
 public interface AttendeeService {
