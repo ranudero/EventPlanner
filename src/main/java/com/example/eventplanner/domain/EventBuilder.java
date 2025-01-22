@@ -1,7 +1,7 @@
 package com.example.eventplanner.domain;
 
-import com.example.eventplanner.utils.CustomDateTimeFormatter;
 import com.example.eventplanner.exceptions.DateNotInFutureException;
+import com.example.eventplanner.utils.CustomDateTimeFormatter;
 import lombok.Getter;
 
 import java.time.LocalDate;
