@@ -99,7 +99,7 @@ public class EventPostgreSqlServiceTest {
             );
 
             //when
-            when(eventRepository.findAllByName(any())).thenReturn(List.of(repositoryEventOne,repositoryEventTwo));
+            when(eventRepository.findClosestEventByName(any(),any())).thenReturn(Optional.of(repositoryEventOne));
             RetrievedEventDTO actualEvent = eventPostgreSqlService.fetchEvent(eventNameOne);
 
             //then

@@ -49,12 +49,7 @@ public class EventPostgreSqlService implements EventService {
     }
 
     private Event getEventByName(String eventName) {
-        List<Event> events = eventRepository.findAllByName(eventName);
-        if (events.isEmpty()) {
-            throw new EventWithNameNotFoundException(eventName);
-        }
-        return events.stream()
-                .min(Comparator.comparing(event -> Math.abs(ChronoUnit.SECONDS.between(event.getStart(), LocalDateTime.now()))))
+        return eventRepository.findClosestEventByName(eventName, LocalDateTime.now())
                 .orElseThrow(() -> new EventWithNameNotFoundException(eventName));
     }
 
