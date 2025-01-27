@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/attendees")
 @RequiredArgsConstructor
 public class AttendeeController {
-    private final AttendeeService attendeePostgreSqlService;
+    private final AttendeeService attendeeService;
 
     @PostMapping
     public CreatedAttendeeDTO addAttendee(@RequestBody @Valid SignupNewAttendeeCommand newAttendee){
-        return attendeePostgreSqlService.addAttendee(newAttendee);
+        return attendeeService.addAttendee(newAttendee);
     }
 
     @GetMapping("/{personalCode}")
     public RetrievedAttendeeDTO getAttendeeByPersonalCode(@PathVariable String PersonalCode){
-        return attendeePostgreSqlService.fetchAttendee(PersonalCode);
+        return attendeeService.fetchAttendee(PersonalCode);
     }
 
 }

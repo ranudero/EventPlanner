@@ -21,15 +21,17 @@ class RetrievedEventDTOTest {
         //Given
         Attendee attendee = new Attendee("Lander Verbrugghe", new PersonalCode("PVJ9"));
         LocalDateTime today = LocalDateTime.now();
+        String name = "Test event";
+        int numberOfAttendees = 1;
         Event event = new Event(
-                "Test Event",
+                name,
                 today,
                 Set.of(attendee)
         );
         RetrievedEventDTO expectedDTO = new RetrievedEventDTO(
-                "Test Event",
+                name,
                 today,
-                1,
+                numberOfAttendees,
                 Set.of(AttendeeDTO.from(attendee))
         );
 

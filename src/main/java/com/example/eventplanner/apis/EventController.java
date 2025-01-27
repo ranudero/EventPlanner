@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/events")
 public class EventController {
-    private final EventService eventPostgreSqlService;
+    private final EventService eventService;
 
     @PostMapping
     public CreatedEventDTO createEvent(@RequestBody SignupNewEventCommand newEvent) {
-        return eventPostgreSqlService.createEvent(newEvent);
+        return eventService.createEvent(newEvent);
     }
 
     @GetMapping("/{eventName}")
     public RetrievedEventDTO getEventByName(@PathVariable String eventName){
-        return eventPostgreSqlService.fetchEvent(eventName);
+        return eventService.fetchEvent(eventName);
     }
 }
