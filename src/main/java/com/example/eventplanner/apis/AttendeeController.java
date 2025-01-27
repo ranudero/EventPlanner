@@ -20,8 +20,8 @@ public class AttendeeController {
     }
 
     @GetMapping("/{personalCode}")
-    public RetrievedAttendeeDTO getAttendeeByPersonalCode(@PathVariable String PersonalCode){
-        return attendeePostgreSqlService.fetchAttendee(PersonalCode);
+    public RetrievedAttendeeDTO getAttendeeByPersonalCode(@PathVariable String personalCode){
+        return attendeePostgreSqlService.fetchAttendee(personalCode);
     }
 
 }
