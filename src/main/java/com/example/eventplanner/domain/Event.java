@@ -24,7 +24,7 @@ public class Event {
             name = "inviteperevent",
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "attendee_id"))
-    @Getter (AccessLevel.PACKAGE)
+    @Getter
     private Set<Attendee> attendeeList;
 
     public Event(String name, LocalDateTime start, Set<Attendee> attendeeList) {

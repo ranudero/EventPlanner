@@ -63,5 +63,4 @@ public class Attendee implements Comparable<Attendee> {
     public void subscribeToEvent(Event event) {
         events.add(event);
     }
-
 }
