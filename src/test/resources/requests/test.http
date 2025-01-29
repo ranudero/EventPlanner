@@ -14,8 +14,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "Sissi",
-  "personalCode": "PVJ8"
+  "name": "Janik Sinner",
+  "personalCode": "CCDD"
 }
 
 ### post test add Attendee PVJ7
@@ -50,12 +50,12 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "Second Event",
-  "date": "2025-01-15 12:00:00",
+  "name": "Party time",
+  "date": "2025-06-15 12:00:00",
   "attendees": [
-    "PVJ9",
-    "PVJ8",
-    "PVJ7"
+    "AABB",
+    "BBCC",
+    "CCDD"
   ]
 }
 

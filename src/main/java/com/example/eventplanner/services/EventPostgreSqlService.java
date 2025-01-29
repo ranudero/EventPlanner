@@ -6,11 +6,17 @@ import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.EventBuilder;
 import com.example.eventplanner.domain.PersonalCode;
 import com.example.eventplanner.dtos.CreatedEventDTO;
+import com.example.eventplanner.dtos.RetrievedEventDTO;
 import com.example.eventplanner.dtos.SignupNewEventCommand;
+import com.example.eventplanner.exceptions.EventWithNameNotFoundException;
 import com.example.eventplanner.repositories.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,4 +48,14 @@ public class EventPostgreSqlService implements EventService {
                 .collect(Collectors.toSet());
     }
 
+    private Event getEventByName(String eventName) {
+        return eventRepository.findClosestEventByName(eventName, LocalDateTime.now())
+                .orElseThrow(() -> new EventWithNameNotFoundException(eventName));
+    }
+
+    @Override
+    public RetrievedEventDTO fetchEvent(String eventName) {
+        Event fetchedEvent = getEventByName(eventName);
+        return RetrievedEventDTO.from(fetchedEvent);
+    }
 }

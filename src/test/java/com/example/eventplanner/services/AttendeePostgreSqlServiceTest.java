@@ -44,6 +44,7 @@ public class AttendeePostgreSqlServiceTest {
         );
     }
 
+
     @Nested
     class FetchAttendeeUseCase {
 
@@ -140,5 +141,6 @@ public class AttendeePostgreSqlServiceTest {
             assertThrows(IllegalArgumentException.class,() -> attendeePostgreSqlService.addAttendee(new SignupNewAttendeeCommand(name,code)));
         }
     }
+
 
 }
