@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findAllByName(String eventName);
 
-    @Query(value = "SELECT * FROM Event e WHERE e.name = :name ORDER BY ABS(EXTRACT(EPOCH FROM (e.start - :now))) ASC", nativeQuery = true)
+    @Query(value = "SELECT * FROM Event e WHERE e.name = :name ORDER BY ABS(EXTRACT(EPOCH FROM (e.start::timestamp - CAST(:now AS timestamp)))) ASC LIMIT 1", nativeQuery = true)
     Optional<Event> findClosestEventByName(@Param("name") String name, @Param("now") LocalDateTime now);
 
 }

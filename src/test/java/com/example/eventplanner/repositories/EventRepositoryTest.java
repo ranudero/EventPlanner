@@ -21,6 +21,9 @@ public class EventRepositoryTest extends AbstractRepositoryTest{
     @Autowired
     EventRepository repository;
 
+    @Autowired
+    AttendeeRepository attendeeRepository;
+
     @Test
     public void findClosestEventByNameTest(){
         //Given
@@ -29,6 +32,8 @@ public class EventRepositoryTest extends AbstractRepositoryTest{
         LocalDateTime dateEventTwo = LocalDateTime.now().plusDays(12);
         Attendee lander = new Attendee("Lander Verbrugghe",new PersonalCode("PVJ9"));
         Attendee nick = new Attendee("Nick Bauters", new PersonalCode("7DBB"));
+        attendeeRepository.save(lander);
+        attendeeRepository.save(nick);
         Set<Attendee> listOfAttendees = Set.of(lander, nick);
         Event eventOne = new Event(name,dateEventOne,listOfAttendees);
         Event eventTwo = new Event(name, dateEventTwo,listOfAttendees);
