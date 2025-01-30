@@ -7,6 +7,8 @@ import com.example.eventplanner.dtos.AttendeeDTO;
 import com.example.eventplanner.dtos.CreatedEventDTO;
 import com.example.eventplanner.dtos.RetrievedEventDTO;
 import com.example.eventplanner.dtos.SignupNewEventCommand;
+import com.example.eventplanner.exceptions.AttendeeWithPersonalCodeNotFoundException;
+import com.example.eventplanner.exceptions.EventWithNameNotFoundException;
 import com.example.eventplanner.services.AttendeePostgreSqlService;
 import com.example.eventplanner.services.EventPostgreSqlService;
 import com.example.eventplanner.utils.CustomDateTimeFormatter;
@@ -18,6 +20,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -109,5 +113,19 @@ public class EventControllerTest {
                 .andExpect(jsonPath("$.numberOfInvitees").value(expectedResult.numberOfInvitees()))
                 .andExpect(jsonPath("$.attendeeList[0].name").value(expectedResult.attendeeList().iterator().next().name()))
                 .andExpect(jsonPath("$.attendeeList[0].code").value(expectedResult.attendeeList().iterator().next().code()));
+    }
+
+    @Test
+    void getEventByNameTest_notFound() throws Exception{
+        // Given
+        String eventName = "Test event";
+
+        // When
+        when(eventService.fetchEvent(any())).thenThrow(new EventWithNameNotFoundException(eventName));
+
+        // Then
+        mockMvc.perform(get("/api/v1/events/{eventName}", eventName)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 }
