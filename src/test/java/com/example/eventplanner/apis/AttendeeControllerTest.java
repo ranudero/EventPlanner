@@ -1,9 +1,11 @@
 package com.example.eventplanner.apis;
 
 import com.example.eventplanner.domain.Event;
+import com.example.eventplanner.domain.PersonalCode;
 import com.example.eventplanner.dtos.CreatedAttendeeDTO;
 import com.example.eventplanner.dtos.RetrievedAttendeeDTO;
 import com.example.eventplanner.dtos.SignupNewAttendeeCommand;
+import com.example.eventplanner.exceptions.AttendeeWithPersonalCodeNotFoundException;
 import com.example.eventplanner.services.AttendeePostgreSqlService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Tag;
@@ -88,6 +90,20 @@ public class AttendeeControllerTest {
                 .andExpect(jsonPath("$.attendeeName").value(expectedResult.attendeeName()))
                 .andExpect(jsonPath("$.invitedEvents[0].name").value(invitedEvents.get(0).getName()))
                 .andExpect(jsonPath("$.invitedEvents[1].name").value(invitedEvents.get(1).getName()));
+    }
+
+    @Test
+    void getAttendeeByPersonalCodeTest_notFound() throws Exception{
+        // Given
+        String personalCode = "1234";
+
+        // When
+        when(attendeeService.fetchAttendee(personalCode)).thenThrow(new AttendeeWithPersonalCodeNotFoundException(new PersonalCode(personalCode)));
+
+        // Then
+        mockMvc.perform(get("/api/v1/attendees/{personalCode}", personalCode)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 
 
