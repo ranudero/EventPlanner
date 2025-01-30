@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public record RetrievedEventDTO(String name,
-                                LocalDateTime startDate,
+                                String startDate,
                                 int numberOfInvitees,
                                 Set<AttendeeDTO> attendeeList
                                 ) {

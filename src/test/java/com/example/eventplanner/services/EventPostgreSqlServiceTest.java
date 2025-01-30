@@ -93,7 +93,7 @@ public class EventPostgreSqlServiceTest {
 
             RetrievedEventDTO expectedResult = new RetrievedEventDTO(
                     "Test event",
-                    startEventOne,
+                    CustomDateTimeFormatter.formatToDate(startEventOne),
                     attendeeListOne.size(),
                     attendeeListOne.stream().map(AttendeeDTO::from).collect(Collectors.toSet())
             );
