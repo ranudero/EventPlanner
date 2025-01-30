@@ -2,8 +2,6 @@ package com.example.eventplanner.dtos;
 
 import com.example.eventplanner.domain.Event;
 
-import java.time.LocalDateTime;
-
 public record CreatedEventDTO(
         long id,
         String name,
