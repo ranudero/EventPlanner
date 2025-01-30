@@ -3,6 +3,7 @@ package com.example.eventplanner.dtos;
 import com.example.eventplanner.domain.Attendee;
 import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.PersonalCode;
+import com.example.eventplanner.utils.CustomDateTimeFormatter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Tag("unit-tests")
 class RetrievedEventDTOTest {
@@ -21,6 +22,7 @@ class RetrievedEventDTOTest {
         //Given
         Attendee attendee = new Attendee("Lander Verbrugghe", new PersonalCode("PVJ9"));
         LocalDateTime today = LocalDateTime.now();
+        String todayString = CustomDateTimeFormatter.formatToDate(today);
         String name = "Test event";
         int numberOfAttendees = 1;
         Event event = new Event(
@@ -30,7 +32,7 @@ class RetrievedEventDTOTest {
         );
         RetrievedEventDTO expectedDTO = new RetrievedEventDTO(
                 name,
-                today,
+                todayString,
                 numberOfAttendees,
                 Set.of(AttendeeDTO.from(attendee))
         );

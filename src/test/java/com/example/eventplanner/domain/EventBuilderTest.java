@@ -47,7 +47,7 @@ class EventBuilderTest {
                 .build();
         //then
         assertEquals(name, event.getName());
-        assertEquals(start, CustomDateTimeFormatter.formatToDate(event.getStart()));
+        assertEquals(start, event.getStart());
         assertEquals(attendees.size(), event.getAttendeeList().size());
     }
 

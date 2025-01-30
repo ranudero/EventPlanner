@@ -1,5 +1,6 @@
 package com.example.eventplanner.domain;
 
+import com.example.eventplanner.utils.CustomDateTimeFormatter;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,6 +36,10 @@ public class Event {
 
     public int getNumberOfInvitees() {
         return attendeeList.size();
+    }
+
+    public String getStart() {
+        return CustomDateTimeFormatter.formatToDate(start);
     }
 
 

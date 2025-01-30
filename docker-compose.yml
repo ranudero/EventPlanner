@@ -12,6 +12,18 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  test-db:
+    image: postgres:latest
+    container_name: postgres_db_test
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5431:5432"
+    volumes:
+      - postgres_data_test:/var/lib/postgresql/data
 
 volumes:
   postgres_data:
+  postgres_data_test:
