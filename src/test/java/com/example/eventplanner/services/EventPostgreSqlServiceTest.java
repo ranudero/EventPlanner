@@ -6,7 +6,6 @@ import com.example.eventplanner.domain.PersonalCode;
 import com.example.eventplanner.dtos.AttendeeDTO;
 import com.example.eventplanner.dtos.RetrievedEventDTO;
 import com.example.eventplanner.dtos.SignupNewEventCommand;
-import com.example.eventplanner.exceptions.AttendeeWithPersonalCodeNotFoundException;
 import com.example.eventplanner.exceptions.EventWithNameNotFoundException;
 import com.example.eventplanner.repositories.EventRepository;
 import com.example.eventplanner.utils.CustomDateTimeFormatter;
@@ -14,16 +13,18 @@ import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.NestedTestConfiguration;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @Tag("unit-tests")
 public class EventPostgreSqlServiceTest {
@@ -93,7 +94,7 @@ public class EventPostgreSqlServiceTest {
 
             RetrievedEventDTO expectedResult = new RetrievedEventDTO(
                     "Test event",
-                    startEventOne,
+                    CustomDateTimeFormatter.formatToDate(startEventOne),
                     attendeeListOne.size(),
                     attendeeListOne.stream().map(AttendeeDTO::from).collect(Collectors.toSet())
             );
@@ -113,7 +114,7 @@ public class EventPostgreSqlServiceTest {
         @Test
         @DisplayName("Given event name not known then EventWithNameNotFoundException thrown")
         void testEventNameNotKnow_unHappyPath(){
-            when(eventRepository.findAllByName(any())).thenReturn(List.of());
+            when(eventRepository.findClosestEventByName(any(),any())).thenReturn(Optional.empty());
             assertThrows(EventWithNameNotFoundException.class,()-> eventPostgreSqlService.fetchEvent("Feest"));
         }
     }

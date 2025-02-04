@@ -2,12 +2,11 @@ package com.example.eventplanner.dtos;
 
 import com.example.eventplanner.domain.Event;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public record RetrievedEventDTO(String name,
-                                LocalDateTime startDate,
+                                String startDate,
                                 int numberOfInvitees,
                                 Set<AttendeeDTO> attendeeList
                                 ) {

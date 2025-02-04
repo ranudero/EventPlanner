@@ -5,14 +5,12 @@ import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.PersonalCode;
 import com.example.eventplanner.dtos.RetrievedAttendeeDTO;
 import com.example.eventplanner.dtos.SignupNewAttendeeCommand;
-import com.example.eventplanner.exceptions.AttendeeWithDuplicatePersonalCodeException;
 import com.example.eventplanner.exceptions.AttendeeWithPersonalCodeNotFoundException;
 import com.example.eventplanner.repositories.AttendeeRepository;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,7 +19,8 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @Tag("unit-tests")
 public class AttendeePostgreSqlServiceTest {
